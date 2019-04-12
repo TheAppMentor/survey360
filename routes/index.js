@@ -24,8 +24,6 @@ router.get('/listUsers', function(req, res, next) {
            console.log("RESOLVING WITH Results..  : " + allData) 
             res.json(allData)
         })
-        :qa
-
 });
 
 module.exports = router;
