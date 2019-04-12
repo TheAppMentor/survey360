@@ -23,13 +23,18 @@ MongoClient.connect(url, function(err, client) {
     db.createCollection("user", function(err, res) {
         if (err) throw err;
     });
+
+    db.createCollection("question", function(err, res) {
+        if (err) throw err;
+    });
+
     //client.close();
 });
 
 
 export class MongoDBHandler {
         
-    listOneUser(threshold : number) : Promise<any>{
+    getUser(threshold : number) : Promise<any>{
         return new Promise((resolve,reject) => {
             db.collection("user").findOne(function(err, results) {
                 if (err){ reject(err); }
@@ -38,7 +43,7 @@ export class MongoDBHandler {
         });
     } 
 
-    listAllUsers(threshold : number) : Promise<any>{
+    getAllUsers(threshold : number) : Promise<any>{
         return new Promise((resolve,reject) => {
             db.collection("user").find({}).toArray((err, results) => {
                 if (err) { 
@@ -78,6 +83,51 @@ export class MongoDBHandler {
                     resolve(true) 
                 }).catch((err) => {
                     log(error("Mongo insertUser Failed"));
+                    reject(err) 
+                })
+        })
+    }
+
+    getAllQuestions(threshold : number) : Promise<any>{
+        return new Promise((resolve,reject) => {
+            db.collection("question").find({}).toArray((err, results) => {
+                if (err) { 
+                    log(error("Mongo getAllQuestions Failed"));
+                    reject(err); 
+                }
+                log(info("Mongo getAllQuestions Success: Count = "+results.length));
+                return resolve(results);
+            });
+        });
+    }
+
+    deleteQuestion(questionId : string) : Promise<any>{
+        return new Promise((resolve,reject) => {
+            try {
+                const _id = new ObjectID(questionId);
+                const result = db.collection("question").deleteOne({ "_id": _id});
+                result.then((obj) => {
+                    log(info("Mongo deleteQuestion Success: "+obj));
+                    resolve(true);
+                }).catch((err) => {
+                    log(error("Mongo deleteQuestion - ["+questionId+"] Failed: "+err));
+                    reject(err); 
+                });
+            } catch (err) {
+                log(error("Mongo deleteQuestion - ["+questionId+"] Failed: "+err));
+                reject(err);
+            }
+        });
+    } 
+    
+    insertQuestion(question : any) : Promise<boolean> {
+        return new Promise((resolve,reject) => {
+            db.collection("question").insertOne(question)
+                .then((results) => {
+                    log(info("Mongo insertQuestion Success"));
+                    resolve(true) 
+                }).catch((err) => {
+                    log(error("Mongo insertQuestion Failed"));
                     reject(err) 
                 })
         })

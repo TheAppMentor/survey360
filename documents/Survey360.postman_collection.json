@@ -18,7 +18,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[\n    {\n        \"name\": \"Reshma\",\n        \"email\": \"reshma.raghu@sap.com\"\n    }\n]"
+					"raw": "[\n    {\n        \"name\": \"Arjun\",\n        \"email\": \"arjun.s@sap.com\"\n    }\n]"
 				},
 				"url": {
 					"raw": "http://localhost:3000/users/createUsers",
@@ -72,7 +72,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[\n    {\n        \"_id\": \"5cb04bf5008b662938ff2853\",\n        \"name\": \"Reshma\",\n        \"email\": \"reshma.raghu@sap.com\"\n    },\n    {\n        \"_id\": \"5cb04bf5008b662933er2873\",\n        \"name\": \"Arjun\",\n        \"email\": \"arjun.s@sap.com\"\n    }\n]"
+					"raw": "[\n    {\n        \"_id\": \"5cb0caf072d00d370fe0e040\",\n        \"name\": \"Arjun\",\n        \"email\": \"arjun.s@sap.com\"\n    }\n]"
 				},
 				"url": {
 					"raw": "http://localhost:3000/users/deleteUsers",
@@ -84,6 +84,96 @@
 					"path": [
 						"users",
 						"deleteUsers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "readQuestions",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/questions/readQuestions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"questions",
+						"readQuestions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createQuestions",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    {\n        \"text\": \"Is the person an effective team player\"\n    },\n    {\n        \"text\": \"Did the person make a valuable contribution you would like to recognise/appreciate\"\n    }\n]"
+				},
+				"url": {
+					"raw": "http://localhost:3000/questions/createQuestions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"questions",
+						"createQuestions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteQuestions",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    {\n        \"_id\": \"5cb0cfe314a687382505502a\",\n        \"name\": \"Rate the person on team player quality\"\n    }\n]"
+				},
+				"url": {
+					"raw": "http://localhost:3000/questions/deleteQuestions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"questions",
+						"deleteQuestions"
 					]
 				}
 			},

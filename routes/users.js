@@ -18,7 +18,7 @@ router.post('/createUsers', jsonParser, function(req, res, next) {
 		console.log("CREATING User  : " + userName) 
 	});
   	
-  	dbHandler.listAllUsers()
+  	dbHandler.getAllUsers()
         .then((allData) => {
            console.log("RESOLVING WITH Results..  : " + allData) 
             res.json(allData)
@@ -27,7 +27,7 @@ router.post('/createUsers', jsonParser, function(req, res, next) {
 
 /* GET */
 router.get('/readUsers', function(req, res, next) {
-    dbHandler.listAllUsers()
+    dbHandler.getAllUsers()
         .then((allData) => {
            	console.log("RESOLVING WITH Results..  : " + allData) 
             res.json(allData)
