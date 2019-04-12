@@ -4,7 +4,10 @@ var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var chalk = require('chalk');
 var log = console.log;
+var error = chalk.bold.red;
+var info = chalk.cyan;
 var url = 'mongodb://localhost:27017';
+var ObjectID = require('mongodb').ObjectID;
 // Database Name
 var dbName = 'survey360';
 var db;
@@ -36,20 +39,41 @@ var MongoDBHandler = /** @class */ (function () {
         return new Promise(function (resolve, reject) {
             db.collection("user").find({}).toArray(function (err, results) {
                 if (err) {
+                    log(error("Mongo listAllUsers Failed"));
                     reject(err);
                 }
+                log(info("Mongo listAllUsers Success: Count = " + results.length));
                 return resolve(results);
             });
+        });
+    };
+    MongoDBHandler.prototype.deleteUser = function (userId) {
+        return new Promise(function (resolve, reject) {
+            try {
+                var _id = new ObjectID(userId);
+                var result = db.collection("user").deleteOne({ "_id": _id });
+                result.then(function (obj) {
+                    log(info("Mongo deleteUser Success: " + obj));
+                    resolve(true);
+                })["catch"](function (err) {
+                    log(error("Mongo deleteUser - [" + userId + "] Failed: " + err));
+                    reject(err);
+                });
+            }
+            catch (err) {
+                log(error("Mongo deleteUser - [" + userId + "] Failed: " + err));
+                reject(err);
+            }
         });
     };
     MongoDBHandler.prototype.insertUser = function (user) {
         return new Promise(function (resolve, reject) {
             db.collection("user").insertOne(user)
                 .then(function (results) {
-                log(chalk.green("Mongo Write Success"));
+                log(info("Mongo insertUser Success"));
                 resolve(true);
             })["catch"](function (err) {
-                log(chalk.red("Mongo Write Failed"));
+                log(error("Mongo insertUser Failed"));
                 reject(err);
             });
         });

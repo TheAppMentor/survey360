@@ -41,7 +41,20 @@ router.put('/updateUsers', function(req, res, next) {
 
 /* DELETE */
 router.delete('/deleteUsers', function(req, res, next) {
-    
+	const arrayOfUsers = req.body;
+	let deletePromises = [];
+	arrayOfUsers.forEach((user) => {
+		const userId = user._id;
+		let deletePromise = dbHandler.deleteUser(userId);
+		deletePromises.push(deletePromise);
+		console.log("DELETE User  : " + userId) 
+	});
+	Promise.all(deletePromises).then(() => {
+		res.json("DELETED!");
+	}).catch((err) => {
+		res.status(400);
+		res.json("ERROR!!");
+	});;
 });
 
 module.exports = router;
