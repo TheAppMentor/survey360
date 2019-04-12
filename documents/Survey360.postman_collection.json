@@ -1,0 +1,93 @@
+{
+	"info": {
+		"_postman_id": "2f88e6b0-ce0e-4067-b0e2-2ba000499987",
+		"name": "Survey360",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "createUsers",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    {\n        \"name\": \"Reshma\",\n        \"email\": \"reshma.raghu@sap.com\"\n    }\n]"
+				},
+				"url": {
+					"raw": "http://localhost:3000/users/createUsers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"createUsers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "readUsers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/users/readUsers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"readUsers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteUsers",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    {\n        \"_id\": \"5cb04bf5008b662938ff2853\",\n        \"name\": \"Reshma\",\n        \"email\": \"reshma.raghu@sap.com\"\n    },\n    {\n        \"_id\": \"5cb04bf5008b662933er2873\",\n        \"name\": \"Arjun\",\n        \"email\": \"arjun.s@sap.com\"\n    }\n]"
+				},
+				"url": {
+					"raw": "http://localhost:3000/users/deleteUsers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"deleteUsers"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
