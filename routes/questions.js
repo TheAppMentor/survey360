@@ -8,19 +8,24 @@ const DatabaseHandler = require('../database/MongoDBHandler').MongoDBHandler
 const dbHandler = new DatabaseHandler()
 
 /* POST */
-router.post('/createQuestions', jsonParser, function(req, res, next) {
+router.post('/', jsonParser, function(req, res, next) {
 
 	const arrayOfQuestions = req.body;
 	arrayOfQuestions.forEach((question) => {
 		const text = question.text;
-		dbHandler.insertQuestion({name: text})
+		dbHandler.insertQuestion({text: text})
 		console.log("CREATING Question  : " + text) 
 	});
-  	res.json(arrayOfQuestions);
+  	dbHandler.getAllQuestions()
+        .then((allData) => {
+           	console.log("RESOLVING WITH Results..  : " + allData);
+           	res.status(201);
+            res.json(allData)
+        })
 });
 
 /* GET */
-router.get('/readQuestions', function(req, res, next) {
+router.get('/', function(req, res, next) {
     dbHandler.getAllQuestions()
         .then((allData) => {
            	console.log("RESOLVING WITH Results..  : " + allData) 
@@ -29,16 +34,15 @@ router.get('/readQuestions', function(req, res, next) {
 });
 
 /* PUT */
-router.put('/updateQuestions', function(req, res, next) {
+router.put('/', function(req, res, next) {
    
 });
 
 /* DELETE */
-router.delete('/deleteQuestions', function(req, res, next) {
-	const arrayOfQuestions = req.body;
+router.delete('/', function(req, res, next) {
+	const arrayOfQuestionIds = req.body;
 	let deletePromises = [];
-	arrayOfQuestions.forEach((question) => {
-		const questionId = question._id;
+	arrayOfQuestionIds.forEach((questionId) => {
 		let deletePromise = dbHandler.deleteQuestion(questionId);
 		deletePromises.push(deletePromise);
 		console.log("DELETE Question  : " + questionId) 

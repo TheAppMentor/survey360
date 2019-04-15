@@ -28,17 +28,22 @@ MongoClient.connect(url, function(err, client) {
         if (err) throw err;
     });
 
+    db.createCollection("survey", function(err, res) {
+        if (err) throw err;
+    });
+
     //client.close();
 });
 
 
 export class MongoDBHandler {
         
-    getUser(threshold : number) : Promise<any>{
+    getUser(userId : number) : Promise<any>{
         return new Promise((resolve,reject) => {
-            db.collection("user").findOne(function(err, results) {
-                if (err){ reject(err); }
-                return resolve(results)
+            log(info("Mongo getUser for: "+userId));
+            db.collection("user").findOne({ "_id": userId}).then((user) => {
+                log(info("Mongo gotUser: "+user.name));
+                resolve(user);
             });
         });
     } 
@@ -59,8 +64,7 @@ export class MongoDBHandler {
     deleteUser(userId : string) : Promise<any>{
         return new Promise((resolve,reject) => {
             try {
-                const _id = new ObjectID(userId);
-                const result = db.collection("user").deleteOne({ "_id": _id});
+                const result = db.collection("user").deleteOne({ "_id": userId});
                 result.then((obj) => {
                     log(info("Mongo deleteUser Success: "+obj));
                     resolve(true);
@@ -87,6 +91,17 @@ export class MongoDBHandler {
                 })
         })
     }
+
+    getQuestion(questionId : number) : Promise<any>{
+        return new Promise((resolve,reject) => {
+            const _id = new ObjectID(questionId);
+            log(info("Mongo getQuestion for: "+questionId));
+            db.collection("question").findOne({ "_id": _id}).then((question) => {
+                log(info("Mongo gotQuestion: "+question.text));
+                resolve(question);
+            });
+        });
+    } 
 
     getAllQuestions(threshold : number) : Promise<any>{
         return new Promise((resolve,reject) => {
@@ -132,4 +147,83 @@ export class MongoDBHandler {
                 })
         })
     }
+
+    insertSurvey(survey : any) : Promise<boolean> {
+        return new Promise((resolve,reject) => {
+            db.collection("survey").insertOne(survey)
+                .then((results) => {
+                    log(info("Mongo insertSurvey Success: " + results));
+                    resolve(true) 
+                }).catch((err) => {
+                    log(error("Mongo insertSurvey Failed"));
+                    reject(err) 
+                })
+        })
+    }
+
+    getSurvey(surveyId : string) : Promise<any>{
+        return new Promise((resolve,reject) => {
+            const _id = new ObjectID(surveyId);
+            const result = db.collection("survey").findOne({ "_id": _id});
+            result.then((survey) => {
+                log(info("Mongo getSurvey "+surveyId+": "+survey.name));
+                let participants = [];
+                let questions = [];
+                let allPromises = [];
+                const createdByUserPromise = this.getUser(survey.createdBy).then((createdByUser) => {
+                    survey.createdBy = createdByUser;
+                });
+                allPromises.push(createdByUserPromise);
+                survey.participants.forEach((participantId) => {
+                    const getUserPromise = this.getUser(participantId).then((participant) => {
+                        participants.push(participant);
+                    }); 
+                    allPromises.push(getUserPromise);
+                });
+                survey.questions.forEach((questionId) => {
+                    const getQuestionPromise = this.getQuestion(questionId).then((question) => {
+                        questions.push(question);
+                    });
+                    allPromises.push(getQuestionPromise);
+                });
+                Promise.all(allPromises).then(() => {
+                    survey.participants = participants;
+                    survey.questions = questions;
+                    resolve(survey);
+                }); 
+            });   
+        });
+    }
+
+    getAllSurveys(threshold : number) : Promise<any>{
+        return new Promise((resolve,reject) => {
+            db.collection("survey").find({}).toArray((err, results) => {
+                if (err) { 
+                    log(error("Mongo getAllSurveys Failed"));
+                    reject(err); 
+                }
+                log(info("Mongo getAllSurveys Success: Count = "+results.length));
+                return resolve(results);
+            });
+        });
+    }
+
+    deleteSurvey(surveyId : string) : Promise<any>{
+        return new Promise((resolve,reject) => {
+            try {
+                const _id = new ObjectID(surveyId);
+                const result = db.collection("survey").deleteOne({ "_id": _id});
+                result.then((obj) => {
+                    log(info("Mongo deleteSurvey Success: "+obj));
+                    resolve(true);
+                }).catch((err) => {
+                    log(error("Mongo deleteSurvey - ["+surveyId+"] Failed: "+err));
+                    reject(err); 
+                });
+            } catch (err) {
+                log(error("Mongo deleteQuestion - ["+surveyId+"] Failed: "+err));
+                reject(err);
+            }
+        });
+    } 
 }

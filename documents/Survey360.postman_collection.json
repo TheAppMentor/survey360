@@ -18,10 +18,10 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[\n    {\n        \"name\": \"Arjun\",\n        \"email\": \"arjun.s@sap.com\"\n    }\n]"
+					"raw": "[\n    {\n        \"name\": \"Aban\",\n        \"email\": \"aban.nath@sap.com\"\n    },\n    {\n        \"name\": \"Pramod\",\n        \"email\": \"pramod.sripati@sap.com\"\n    },\n    {\n        \"name\": \"Prasad\",\n        \"email\": \"prasad.not@sap.com\"\n    }\n]"
 				},
 				"url": {
-					"raw": "http://localhost:3000/users/createUsers",
+					"raw": "http://localhost:3000/users/",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -29,14 +29,14 @@
 					"port": "3000",
 					"path": [
 						"users",
-						"createUsers"
+						""
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "readUsers",
+			"name": "getAllUsers",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -45,7 +45,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:3000/users/readUsers",
+					"raw": "http://localhost:3000/users/",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -53,7 +53,7 @@
 					"port": "3000",
 					"path": [
 						"users",
-						"readUsers"
+						""
 					]
 				}
 			},
@@ -72,32 +72,31 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[\n    {\n        \"_id\": \"5cb0caf072d00d370fe0e040\",\n        \"name\": \"Arjun\",\n        \"email\": \"arjun.s@sap.com\"\n    }\n]"
+					"raw": "[\n    \"aban.nath@sap.com\"\n]"
 				},
 				"url": {
-					"raw": "http://localhost:3000/users/deleteUsers",
+					"raw": "http://localhost:3000/users",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"users",
-						"deleteUsers"
+						"users"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "readQuestions",
+			"name": "getAllQuestions",
 			"request": {
 				"method": "GET",
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
+						"type": "text",
+						"value": "application/json"
 					}
 				],
 				"body": {
@@ -105,15 +104,14 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:3000/questions/readQuestions",
+					"raw": "http://localhost:3000/questions",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"questions",
-						"readQuestions"
+						"questions"
 					]
 				}
 			},
@@ -135,15 +133,14 @@
 					"raw": "[\n    {\n        \"text\": \"Is the person an effective team player\"\n    },\n    {\n        \"text\": \"Did the person make a valuable contribution you would like to recognise/appreciate\"\n    }\n]"
 				},
 				"url": {
-					"raw": "http://localhost:3000/questions/createQuestions",
+					"raw": "http://localhost:3000/questions",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"questions",
-						"createQuestions"
+						"questions"
 					]
 				}
 			},
@@ -162,18 +159,140 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[\n    {\n        \"_id\": \"5cb0cfe314a687382505502a\",\n        \"name\": \"Rate the person on team player quality\"\n    }\n]"
+					"raw": "[\n\t\"5cb0d1b3b78b8938808f5262\"\n]"
 				},
 				"url": {
-					"raw": "http://localhost:3000/questions/deleteQuestions",
+					"raw": "http://localhost:3000/questions",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"questions",
-						"deleteQuestions"
+						"questions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createSurvey",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"MOBI end-of-release survey\",\n\t\"createdBy\": \"pramod.sripati@sap.com\",\n\t\"participants\": [\n    \t\"reshma.raghu@sap.com\",\n    \t\"a.k@sap.com\"\n\t],\n\t\"questions\": [\n    \t\"5cb4597016d88257eb8f9ef3\",\n    \t\"5cb4597016d88257eb8f9ef4\"\n\t]\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/surveys/createSurvey",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"surveys",
+						"createSurvey"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllSurveys",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/surveys",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"surveys"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getSurvey",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/surveys?id=5cb45ce916d88257eb8f9ef5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"surveys"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "5cb45ce916d88257eb8f9ef5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteSurvey",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/surveys?id=5cb44c8fbaef67556e522e9b",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"surveys"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "5cb44c8fbaef67556e522e9b"
+						}
 					]
 				}
 			},
