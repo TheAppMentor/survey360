@@ -9,7 +9,11 @@ var usersRouter = require('./routes/users');
 var questionsRouter = require('./routes/questions');
 var surveysRouter = require('./routes/surveys');
 
+var cors = require('cors');
+
 var app = express();
+
+app.use(cors({origin: '*'}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
