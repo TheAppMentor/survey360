@@ -6,10 +6,12 @@ var chalk = require('chalk');
 var log = console.log;
 var error = chalk.bold.red;
 var info = chalk.cyan;
-var url = 'mongodb://localhost:27017';
+//var url = 'mongodb://localhost:27017';
+var url = 'mongodb://s-CUu7L5vLOeBDeV:hIMgvBf3sftkqv6q@10.11.241.3:53240/ECJsvI_hZvZDB2xD';
 var ObjectID = require('mongodb').ObjectID;
 // Database Name
-var dbName = 'survey360';
+var dbName = 'ECJsvI_hZvZDB2xD';
+//'survey360';
 var db;
 // Use connect method to connect to the server
 MongoClient.connect(url, function (err, client) {

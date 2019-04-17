@@ -4,7 +4,7 @@ const bodyParser = require('body-parser')
 // create application/json parser
 var jsonParser = bodyParser.json()
 
-const DatabaseHandler = require('../database/MongoDBHandler').MongoDBHandler
+const DatabaseHandler = require('../database/mongodbHandler').MongoDBHandler
 const dbHandler = new DatabaseHandler()
 
 /* POST */

@@ -4,7 +4,7 @@ const bodyParser = require('body-parser')
 // create application/json parser
 var jsonParser = bodyParser.json()
 
-const DatabaseHandler = require('../database/MongoDBHandler').MongoDBHandler
+const DatabaseHandler = require('../database/mongodbHandler').MongoDBHandler
 const dbHandler = new DatabaseHandler()
 
 /* POST */
@@ -12,9 +12,8 @@ router.post('/', jsonParser, function(req, res, next) {
 
 	const arrayOfQuestions = req.body;
 	arrayOfQuestions.forEach((question) => {
-		const text = question.text;
-		dbHandler.insertQuestion({text: text})
-		console.log("CREATING Question  : " + text) 
+		dbHandler.insertQuestion(question)
+		console.log("CREATING Question  : " + question.text) 
 	});
   	dbHandler.getAllQuestions()
         .then((allData) => {

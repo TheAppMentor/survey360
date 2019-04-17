@@ -1,0 +1,6 @@
+applications:
+   - name : survey360
+     memory : 2048M
+     instances : 1
+     services:
+         - survey360MongoDb
