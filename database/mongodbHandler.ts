@@ -7,12 +7,12 @@ const error = chalk.bold.red;
 const info = chalk.cyan;
 
 //var url = 'mongodb://localhost:27017';
+//var dbName = 'survey360';
 const url = 'mongodb://s-CUu7L5vLOeBDeV:hIMgvBf3sftkqv6q@10.11.241.3:53240/ECJsvI_hZvZDB2xD';
 var ObjectID = require('mongodb').ObjectID;
  
 // Database Name
 const dbName = 'ECJsvI_hZvZDB2xD';
-//'survey360';
 var db; 
 
 // Use connect method to connect to the server
@@ -46,6 +46,8 @@ export class MongoDBHandler {
             db.collection("user").findOne({ "_id": userId}).then((user) => {
                 log(info("Mongo gotUser: "+user.name));
                 resolve(user);
+            }).catch((err) => {
+                reject(err);
             });
         });
     } 
@@ -140,7 +142,7 @@ export class MongoDBHandler {
     insertQuestion(question : any) : Promise<boolean> {
         return new Promise((resolve,reject) => {
             db.collection("question").insertOne(question)
-                .then((results) => {
+                .then((result) => {
                     log(info("Mongo insertQuestion Success"));
                     resolve(true) 
                 }).catch((err) => {
@@ -153,9 +155,9 @@ export class MongoDBHandler {
     insertSurvey(survey : any) : Promise<boolean> {
         return new Promise((resolve,reject) => {
             db.collection("survey").insertOne(survey)
-                .then((results) => {
-                    log(info("Mongo insertSurvey Success: " + results));
-                    resolve(true) 
+                .then((result) => {
+                    log(info("Mongo insertSurvey Success: " + result.ops[0]));
+                    resolve(result.ops[0]) 
                 }).catch((err) => {
                     log(error("Mongo insertSurvey Failed"));
                     reject(err) 
@@ -192,6 +194,8 @@ export class MongoDBHandler {
                     survey.participants = participants;
                     survey.questions = questions;
                     resolve(survey);
+                }).catch((err) => {
+                    reject(err);
                 }); 
             });   
         });

@@ -8,13 +8,33 @@ const DatabaseHandler = require('../database/mongodbHandler').MongoDBHandler
 const dbHandler = new DatabaseHandler()
 
 /* POST */
-router.post('/createSurvey', jsonParser, function(req, res, next) {
+router.post('/', jsonParser, function(req, res, next) {
 
 	const survey = req.body;
-	dbHandler.insertSurvey(survey);
 	console.log("CREATING Survey  : " + survey);
-	res.status(201);
-	res.json("DONE");
+	dbHandler.insertSurvey(survey).then((result) => {
+		if (result) {
+			res.status(201);
+			res.json("");
+
+			var surveyLink = "https://survey360.cfapps.sap.hana.ondemand.com/surveys?takeSurvey=" + result._id;
+			var text = "Survey name: " + result.name + "\n";
+			text = text + "Created by: " + result.createdBy + "\n";
+			text = text + "Take the survey: " + surveyLink
+
+
+			var mailServer = require('../mail_server/mailServer');
+			var mailOptions = {
+  				from: 'teamsurveyforyou@gmail.com',
+  				to: 'prashanth.moorthy@sap.com, reshma.raghu@sap.com',
+  				subject: 'Survey360',
+  				text: text
+			};
+			mailServer.sendMail(mailOptions);
+		}
+	}).catch((err) => {
+		res.status(400);
+	});
 });
 
 /* GET */
@@ -27,6 +47,7 @@ router.get('/', function(req, res, next) {
             res.json(data);
         }).catch((err) => {
         	res.status(500);
+        	res.json("");
         });
 	} else {
 		dbHandler.getAllSurveys()

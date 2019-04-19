@@ -7,11 +7,11 @@ var log = console.log;
 var error = chalk.bold.red;
 var info = chalk.cyan;
 //var url = 'mongodb://localhost:27017';
+//var dbName = 'survey360';
 var url = 'mongodb://s-CUu7L5vLOeBDeV:hIMgvBf3sftkqv6q@10.11.241.3:53240/ECJsvI_hZvZDB2xD';
 var ObjectID = require('mongodb').ObjectID;
 // Database Name
 var dbName = 'ECJsvI_hZvZDB2xD';
-//'survey360';
 var db;
 // Use connect method to connect to the server
 MongoClient.connect(url, function (err, client) {
@@ -41,6 +41,8 @@ var MongoDBHandler = /** @class */ (function () {
             db.collection("user").findOne({ "_id": userId }).then(function (user) {
                 log(info("Mongo gotUser: " + user.name));
                 resolve(user);
+            })["catch"](function (err) {
+                reject(err);
             });
         });
     };
@@ -130,7 +132,7 @@ var MongoDBHandler = /** @class */ (function () {
     MongoDBHandler.prototype.insertQuestion = function (question) {
         return new Promise(function (resolve, reject) {
             db.collection("question").insertOne(question)
-                .then(function (results) {
+                .then(function (result) {
                 log(info("Mongo insertQuestion Success"));
                 resolve(true);
             })["catch"](function (err) {
@@ -142,9 +144,9 @@ var MongoDBHandler = /** @class */ (function () {
     MongoDBHandler.prototype.insertSurvey = function (survey) {
         return new Promise(function (resolve, reject) {
             db.collection("survey").insertOne(survey)
-                .then(function (results) {
-                log(info("Mongo insertSurvey Success: " + results));
-                resolve(true);
+                .then(function (result) {
+                log(info("Mongo insertSurvey Success: " + result.ops[0]));
+                resolve(result.ops[0]);
             })["catch"](function (err) {
                 log(error("Mongo insertSurvey Failed"));
                 reject(err);
@@ -181,6 +183,8 @@ var MongoDBHandler = /** @class */ (function () {
                     survey.participants = participants;
                     survey.questions = questions;
                     resolve(survey);
+                })["catch"](function (err) {
+                    reject(err);
                 });
             });
         });
